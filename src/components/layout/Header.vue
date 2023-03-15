@@ -1,0 +1,155 @@
+<template>
+	<div class="header-gradinet ex-header" style="overflow:hidden;">
+		<div class="width-limiter2">
+			<b-container fluid>
+				<b-row>
+					<b-col md="6" class="header-left" style="margin-left: -58px;">
+						<router-link to="/" class="d-none d-md-block">
+							<img src="../../styles/img/logo-wordmark-dark-BG.png" class="header-logo"/>
+						</router-link>
+					</b-col>
+					<b-col md="6" class="header-right">
+						<router-link to="/" class="d-none d-md-block">
+							<img src="../../styles/img/bitxornaut.png" style="max-width: 270px; position:absolute;top: -1rem;right: 7rem;"  class=""/>
+						</router-link>
+					</b-col>
+                    	<NavigationMenu class="d-none d-md-block"/>
+				</b-row>
+                
+			</b-container>
+            
+		</div>
+        
+	</div>
+    
+</template>
+
+<script>
+
+import NavigationMenu from '@/components/menu/NavigationMenu.vue';
+export default {
+	components: {NavigationMenu	},
+
+	
+	data () {
+		return {
+
+		};
+	},
+
+	computed: {
+		isTestnet () {
+			return this.$store.getters['api/isTestnet'];
+		}
+	},
+
+	methods: {
+		getNameByKey (e) {
+			return this.$store.getters['ui/getNameByKey'](e);
+		}
+	}
+};
+</script>
+
+<style lang="scss" scoped>
+.header-gradinet {
+    background-size: 100% auto;
+    position: relative;
+    background-color: #000;
+}
+
+.header-gradinet::before {
+    content: '';
+    background-image: var(--header-bg-img);
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.width-limiter {
+   /* display: block;
+    width: 100%;
+    max-width: $header-max-width;
+    margin-left: auto;
+    margin-right: auto;*/
+}
+
+@media (max-width: 764px) {
+    .ex-header {
+        padding: 5px 0;
+        padding-top: 15px;
+    }
+}
+
+@media (min-width: 764px) {
+    .ex-header {
+        padding: 0px 40px;
+    }
+}
+
+.testnet-badge-container {
+    position: relative;
+}
+
+.testnet-badge {
+    position: absolute;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 13px;
+    color: var(--testnet-badge-title);
+    top: -10px;
+    left: -173px;
+    text-transform: uppercase;
+}
+
+.ex-header {
+    .header-left {
+        display: flex;
+        align-items: center;
+        min-height: 30px;
+
+        .header-logo {
+            width: 100%;
+    padding: 1rem 3rem;
+    max-width: 380px;
+        }
+    }
+
+    .header-center {
+        text-align: center;
+        margin: 5px 0;
+
+        .header-title {
+	    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            color: #fff;
+            font-weight: 500;
+            text-transform: capitalize;
+            font-size: 35px;
+            margin-top: 14px;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .header-sub-title {
+            color: #e4e4e4;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+    }
+
+    .header-right {
+        justify-content: space-around;
+        align-items: flex-end;
+        display: flex;
+        flex-direction: column;
+        margin: 5px 0;
+    }
+}
+</style>

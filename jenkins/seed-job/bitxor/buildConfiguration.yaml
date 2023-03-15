@@ -1,0 +1,25 @@
+builds:
+  - name: Catbuffer Parser
+    path: catbuffer/parser
+
+  - name: Bitxorcore Client
+    path: client/bitxorcore
+
+  - name: Rest Gateway
+    path: client/rest
+
+  - name: Sdk Python
+    path: sdk/python
+    dependsOn:
+      - catbuffer/parser
+
+  - name: Sdk Javascript
+    path: sdk/javascript
+    dependsOn:
+      - catbuffer/parser
+
+  - name: Jenkins
+    path: jenkins
+
+  - name: Linters
+    path: linters

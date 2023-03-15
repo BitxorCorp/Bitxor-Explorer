@@ -1,0 +1,35 @@
+{
+    "path": "/tokens",
+    "name": "tokens",
+    "meta": {
+        "group": "list-page",
+        "keepAliveGoTo": ["detail-page"]
+    },
+    "props": {
+        "layout": "flex",
+        "storeNamespaces": ["token"],
+        "schema": [
+            {
+                "layoutOptions": "full-width",
+                "type": "CardTable",
+                "title": "tokensTitle",
+                "managerGetter": "token/timeline",
+                "errorMessage": "Failed to fetch token list",
+				"pagination": "server",
+                "fields": [
+                    "tokenId",
+                    "tokenAliasNames",
+                    "ownerAddress",
+                    "relativeAmount",
+                    "tokenFlags"
+                ],
+                "mobileFields": [
+                    "tokenId",
+                    "tokenAliasNames",
+                    "ownerAddress",
+                    "tokenFlags"
+                ]
+            }
+        ]
+    }
+}

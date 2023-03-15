@@ -1,0 +1,312 @@
+/* groovylint-disable NestedBlockDepth */
+import java.nio.file.Paths
+import org.jenkinsci.plugins.badge.EmbeddableBadgeConfig
+
+// groovylint-disable-next-line MethodSize
+void call(Closure body) {
+	Map params = [:]
+	body.resolveStrategy = Closure.DELEGATE_FIRST
+	body.delegate = params
+	body()
+
+	String packageRootPath = findJenkinsfilePath()
+
+	pipeline {
+		parameters {
+			gitParameter branchFilter: 'origin/(.*)',
+				defaultValue: "${env.GIT_BRANCH}",
+				name: 'MANUAL_GIT_BRANCH',
+				type: 'PT_BRANCH',
+				selectedValue: 'TOP',
+				sortMode: 'ASCENDING',
+				useRepository: "${helper.resolveRepoName()}"
+			choice name: 'PLATFORM',
+				choices: params.platform ?: 'ubuntu',
+				description: 'Run on specific platform'
+			choice name: 'BUILD_CONFIGURATION',
+				choices: ['release-private', 'release-public'],
+				description: 'build configuration'
+			choice name: 'TEST_MODE',
+				choices: ['code-coverage', 'test'],
+				description: 'test mode'
+			booleanParam name: 'SHOULD_PUBLISH_IMAGE', description: 'true to publish image', defaultValue: false
+		}
+
+		agent {
+			// PLATFORM can be null on first job due to https://issues.jenkins.io/browse/JENKINS-41929
+			label env.PLATFORM == null ? "${params.platform[0]}-agent" : "${env.PLATFORM}-agent"
+		}
+
+		options {
+			ansiColor('css')
+			timestamps()
+		}
+
+		environment {
+			DOCKERHUB_CREDENTIALS_ID = 'docker-hub-token-bitxorserverbot'
+			NPM_CREDENTIALS_ID = 'NPM_TOKEN_ID'
+			PYTHON_CREDENTIALS_ID = 'PYPI_TOKEN_ID'
+			TEST_PYTHON_CREDENTIALS_ID = 'TEST_PYPI_TOKEN_ID'
+			DEV_BRANCH = 'dev'
+			RELEASE_BRANCH = 'main'
+			GITHUB_EMAIL = 'jenkins@bitxor.dev'
+
+			LINT_SETUP_SCRIPT_FILEPATH = 'scripts/ci/setup_lint.sh'
+			LINT_SCRIPT_FILEPATH = 'scripts/ci/lint.sh'
+
+			BUILD_SETUP_SCRIPT_FILEPATH = 'scripts/ci/setup_build.sh'
+			BUILD_SCRIPT_FILEPATH = 'scripts/ci/build.sh'
+
+			TEST_SETUP_SCRIPT_FILEPATH = 'scripts/ci/setup_test.sh'
+			TEST_SCRIPT_FILEPATH = 'scripts/ci/test.sh'
+
+			TEST_EXAMPLES_SCRIPT_FILEPATH = 'scripts/ci/test_examples.sh'
+			TEST_VECTORS_SCRIPT_FILEPATH = 'scripts/ci/test_vectors.sh'
+
+			GITHUB_PAGES_PUBLISH_SCRIPT_FILEPATH = 'scripts/ci/gh_pages_publish.sh'
+		}
+
+		stages {
+			stage('CI pipeline') {
+				agent {
+					dockerfile {
+						dir 'jenkins/docker'
+						filename "${params.ciBuildDockerfile}"
+						args params.dockerArgs == null ? '' : "${params.dockerArgs}"
+
+						// using the same node and the same workspace mounted to the container
+						reuseNode true
+					}
+				}
+				stages {
+					stage('display environment') {
+						steps {
+							println("Parameters: ${params}")
+							sh 'printenv'
+						}
+					}
+					stage('checkout') {
+						when {
+							expression { helper.isManualBuild(env.MANUAL_GIT_BRANCH) }
+						}
+						steps {
+							script {
+								sh "git checkout ${helper.resolveBranchName(env.MANUAL_GIT_BRANCH)}"
+								sh "git reset --hard origin/${helper.resolveBranchName(env.MANUAL_GIT_BRANCH)}"
+								helper.runInitializeScriptIfPresent()
+							}
+						}
+					}
+					stage('verify conventional commit message') {
+						when {
+							anyOf {
+								branch env.DEV_BRANCH
+								branch env.RELEASE_BRANCH
+							}
+						}
+						steps {
+							verifyCommitMessage()
+						}
+					}
+					stage('setup lint') {
+						when {
+							expression {
+								return fileExists(resolvePath(packageRootPath, env.LINT_SETUP_SCRIPT_FILEPATH))
+							}
+						}
+						steps {
+							runStepRelativeToPackageRoot packageRootPath, {
+								setupBuild(env.LINT_SETUP_SCRIPT_FILEPATH)
+							}
+						}
+					}
+					stage('run lint') {
+						when { expression { return fileExists(resolvePath(packageRootPath, env.LINT_SCRIPT_FILEPATH)) } }
+						steps {
+							runStepRelativeToPackageRootWithBadge packageRootPath, "${params.packageId}", 'lint', {
+								linter(env.LINT_SCRIPT_FILEPATH)
+							}
+						}
+					}
+					stage('setup build') {
+						when {
+							expression {
+								return fileExists(resolvePath(packageRootPath, env.BUILD_SETUP_SCRIPT_FILEPATH))
+							}
+						}
+						steps {
+							runStepRelativeToPackageRoot packageRootPath, {
+								setupBuild(env.BUILD_SETUP_SCRIPT_FILEPATH)
+							}
+						}
+					}
+					stage('run build') {
+						when {
+							expression {
+								return fileExists(resolvePath(packageRootPath, env.BUILD_SCRIPT_FILEPATH))
+							}
+						}
+						steps {
+							runStepRelativeToPackageRootWithBadge packageRootPath, "${params.packageId}", 'build', {
+								buildCode(env.BUILD_SCRIPT_FILEPATH)
+							}
+						}
+					}
+					stage('setup tests') {
+						when {
+							expression {
+								return fileExists(resolvePath(packageRootPath, env.TEST_SETUP_SCRIPT_FILEPATH))
+							}
+						}
+						steps {
+							runStepRelativeToPackageRoot packageRootPath, {
+								setupTests(env.TEST_SETUP_SCRIPT_FILEPATH)
+							}
+						}
+					}
+					stage('run tests') {
+						steps {
+							runStepRelativeToPackageRootWithBadge packageRootPath, "${params.packageId}", 'test', {
+								runTests(env.TEST_SCRIPT_FILEPATH)
+							}
+						}
+					}
+					stage('run tests (examples)') {
+						when {
+							expression {
+								return fileExists(resolvePath(packageRootPath, env.TEST_EXAMPLES_SCRIPT_FILEPATH))
+							}
+						}
+						steps {
+							runStepRelativeToPackageRootWithBadge packageRootPath, "${params.packageId}", 'examples', {
+								runTests(env.TEST_EXAMPLES_SCRIPT_FILEPATH)
+							}
+						}
+					}
+					stage('run tests (vectors)') {
+						when {
+							expression {
+								return fileExists(resolvePath(packageRootPath, env.TEST_VECTORS_SCRIPT_FILEPATH))
+							}
+						}
+						steps {
+							runStepRelativeToPackageRootWithBadge packageRootPath, "${params.packageId}", 'vectors', {
+								runTests(env.TEST_VECTORS_SCRIPT_FILEPATH)
+							}
+						}
+					}
+					stage('code coverage') {
+						when {
+							allOf {
+								expression {
+									// The branch indexing build TEST_MODE = null
+									return env.TEST_MODE == null || env.TEST_MODE == 'code-coverage'
+								}
+								expression {
+									return params.codeCoverageTool != null
+								}
+								expression {
+									return params.minimumCodeCoverage != null
+								}
+							}
+						}
+						steps {
+							runStepRelativeToPackageRoot packageRootPath, {
+								codeCoverage(params)
+							}
+						}
+					}
+				}
+			}
+			stage('CD pipeline') {
+				stages {
+					stage('publish RC') {
+						when {
+							allOf {
+								expression {
+									return helper.isManualBuild(env.MANUAL_GIT_BRANCH)
+								}
+								expression {
+									return shouldPublishImage(env.SHOULD_PUBLISH_IMAGE)
+								}
+								not {
+									expression {
+										return helper.isPublicBuild(env.BUILD_CONFIGURATION)
+									}
+								}
+							}
+						}
+						steps {
+							runStepRelativeToPackageRoot packageRootPath, {
+								publish(params, 'alpha')
+							}
+						}
+					}
+					stage('publish Release') {
+						when {
+							allOf {
+								branch env.RELEASE_BRANCH
+								expression {
+									return helper.isManualBuild(env.MANUAL_GIT_BRANCH)
+								}
+								expression {
+									return shouldPublishImage(env.SHOULD_PUBLISH_IMAGE)
+								}
+								expression {
+									return helper.isPublicBuild(env.BUILD_CONFIGURATION)
+								}
+							}
+						}
+						steps {
+							runStepRelativeToPackageRoot packageRootPath, {
+								publish(params, 'release')
+							}
+						}
+					}
+				}
+			}
+		}
+		post {
+			//TODO: add notification
+			success {
+				echo "Build Success - ${env.JOB_BASE_NAME} - ${env.BUILD_ID} on ${env.BUILD_URL}"
+			}
+			failure {
+				echo "Build Failed - ${env.JOB_BASE_NAME} - ${env.BUILD_ID} on ${env.BUILD_URL}"
+			}
+			aborted {
+				echo " ${env.JOB_BASE_NAME} Build - ${env.BUILD_ID} Aborted!"
+			}
+		}
+	}
+}
+
+void runStepRelativeToPackageRoot(String rootPath, Closure body) {
+	dir(rootPath) {
+		body()
+	}
+}
+
+void runStepRelativeToPackageRootWithBadge(String rootPath, String packageId, String badgeName, Closure body) {
+	EmbeddableBadgeConfig badge = addEmbeddableBadgeConfiguration(id: "${packageId}-${badgeName}", subject: badgeName)
+	badge.status = 'running'
+
+	Boolean isSuccess = false
+	try {
+		runStepRelativeToPackageRoot rootPath, body
+		badge.status = 'passing'
+		isSuccess = true
+	} finally {
+		if (!isSuccess) {
+			badge.status = 'failing'
+		}
+	}
+}
+
+String resolvePath(String rootPath, String path) {
+	return Paths.get(rootPath).resolve(path).toString()
+}
+
+Boolean shouldPublishImage(String shouldPublish) {
+	return shouldPublish == null ? false : shouldPublish.toBoolean()
+}

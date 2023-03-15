@@ -1,0 +1,14 @@
+version: '2.1'
+services:
+  lint:
+    image: {{IMAGE_NAME}}
+    user: {{USER}}
+    working_dir: /bitxorcore-src/client/bitxorcore
+    cap_add:
+      - SYS_PTRACE
+    command: python3 /scripts/runDockerTestsInnerLint.py --out-dir /bitxorcore-data/logs
+    volumes:
+      - ./bitxorcore-data:/bitxorcore-data
+      - '{{BITXORCORE_SRC}}:/bitxorcore-src'
+      - '{{SCRIPT_PATH}}:/scripts'
+      - '{{LINTER_PATH}}:/linters'

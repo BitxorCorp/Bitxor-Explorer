@@ -1,0 +1,57 @@
+{
+	"apiNodePort": 3001,
+	"endpoints": {
+		"marketData": "https://explorer.bitxor.org:8001",
+		"statisticsService": "https://explorer.bitxor.org:8443"
+	},
+	 "networkConfig": {
+    "namespaceName": "bitxor",
+    "divisibility": "8",
+    "namespaceId": "3D1FE6EDC7F9611E"
+  },	"footer": {
+		"link": [
+			{
+				"href": "https://github.com/BitxorCorp/",
+				"text": "Github",
+				"icon": "IconGithub"
+			},
+			{
+				"href": "https://discord.gg/Z7gTYYGdcA",
+				"text": "Discord",
+				"icon": "IconDiscord"
+			},
+			{
+				"href": "https://twitter.com/bitxor_official",
+				"text": "Twitter",
+				"icon": "IconTwitter"
+			},
+			{
+				"href": "https://www.facebook.com/bitxor",
+				"text": "Facebook",
+				"icon": "IconFacebook"
+			},
+			{
+				"href": "https://t.me/bitxor",
+				"text": "Telegram",
+				"icon": "IconTelegram"
+			},
+			{
+				"href": "https://www.reddit.com/u/Bitxor_ex/",
+				"text": "Reddit",
+				"icon": "IconReddit"
+			},
+			{
+				"href": "https://www.instagram.com/bitxor_official",
+				"text": "Instagram",
+				"icon": "IconInstagram"
+			},
+			{
+				"href": "https://forum.bitxor.org/",
+				"text": "Forum",
+				"icon": "IconForum"
+			}
+			
+		]
+	}
+}
+

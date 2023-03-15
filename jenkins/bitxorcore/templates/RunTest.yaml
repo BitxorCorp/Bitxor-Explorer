@@ -1,0 +1,51 @@
+version: '2.1'
+services:
+  db:
+    image: mongo:4.2-rc
+    user: {{USER}}
+    networks:
+      test_net:
+        ipv6_address: 2001:3200:{{NETWORK_IP}}::25
+    command: mongod --bind_ip_all --dbpath=/mongo --logpath /mongo/mongod.log
+    stop_signal: SIGINT
+    volumes:
+      - ./mongo/{{BUILD_NUMBER}}:/mongo:rw
+
+  test:
+    image: {{IMAGE_NAME}}
+    user: {{USER}}
+    networks:
+      test_net:
+        ipv6_address: 2001:3200:{{NETWORK_IP}}::20
+    environment:
+      - GTESTFILTER={{GTESTFILTER}}
+      - STRESSCOUNT={{STRESSCOUNT}}
+      - LD_LIBRARY_PATH=/usr/bitxorcore/lib:/usr/bitxorcore/deps
+    working_dir: /bitxorcore-data/workdir
+    cap_add:
+      - SYS_PTRACE
+    ulimits:
+      core: -1
+    command: >-
+      python3 /scripts/runDockerTestsInnerTest.py
+        --compiler-configuration /{{COMPILER_CONFIGURATION}}
+        --exe-path /usr/bitxorcore/tests
+        --out-dir /bitxorcore-data
+        --source-path /bitxorcore-src/client/bitxorcore
+        --verbosity {{VERBOSITY}}
+    volumes:
+      - ./bitxorcore-data:/bitxorcore-data
+      - '{{BITXORCORE_SRC}}:/bitxorcore-src'
+      - '{{SCRIPT_PATH}}:/scripts'
+    depends_on:
+      - db
+
+networks:
+  test_net:
+    enable_ipv6: true
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 2001:3200:{{NETWORK_IP}}::/64
+          gateway: 2001:3200:{{NETWORK_IP}}::1

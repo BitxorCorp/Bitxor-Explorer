@@ -1,0 +1,15 @@
+version: '2.1'
+services:
+  bench:
+    image: {{IMAGE_NAME}}
+    user: {{USER}}
+    working_dir: /bitxorcore-data/workdir
+    cap_add:
+      - SYS_PTRACE
+    command: python3 /scripts/runDockerTestsInnerBench.py --exe-path /usr/bitxorcore/bin  --out-dir /bitxorcore-data/logs
+    environment:
+      - LD_LIBRARY_PATH=/usr/bitxorcore/lib:/usr/bitxorcore/deps
+    volumes:
+      - ./bitxorcore-data:/bitxorcore-data
+      - '{{BITXORCORE_SRC}}:/bitxorcore-src'
+      - '{{SCRIPT_PATH}}:/scripts'

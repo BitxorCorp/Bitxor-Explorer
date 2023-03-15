@@ -1,0 +1,53 @@
+// --- Bitxor color palette ---
+
+$primary-color: #5200c6;
+$secondary-color: #44004e;
+$red-color: red;
+$pink-color: #f0f;
+$accent-color: #f0f;
+$blue-color: #00c8ff;
+$green-color: #287326;
+$orange-color: #F4A900;
+$violet-color: #24a5cb;
+$black-color: #000000;
+$white-color: #ffffff;
+$grey-color: #555;
+$dark-grey-color: #000000de;
+$transparent: #00000000;
+$light-white-grey: #707070;
+$testnet-dark-mode-main-bg: #272727;
+$testnet-dark-mode-grid-bg: #303030;
+
+
+$light-mode-card-bg-color: #fcfcfc;
+
+$dark-white-color: #f3f4f8;
+$dark-mode-button-text-color: #26C3F2;
+$dark-mode-text-title-color: #26C3F2;
+$dark-mode-text-color: #CCC;
+$dark-mode-green-text-color: #287326;
+$dark-mode-card-bg-color: #0B0118;
+$dark-mode-main-bg: #221c31;
+$dark-mode-grid-bg: #2b263a66;
+$dark-mode-card-border-color: #503d86;
+
+// --- General colors ---
+
+$title-text-color: $dark-mode-text-title-color;
+$link-text-color: $dark-mode-button-text-color;
+$card-error-text-color: #98a8b4;
+$clickable-item: #fffc;
+$token-filed: #462d91;
+
+// --- TableView colors
+
+$table-striped-color-first: transparent;
+$table-striped-color-second: transparent;
+$table-hover-color: #00454e1a;
+
+// --- Body width-limiter
+
+$header-max-width: 2400px;
+$navmenu-max-width: 2400px;
+$page-max-width: 1500px;
+$footer-max-width: 2400px;

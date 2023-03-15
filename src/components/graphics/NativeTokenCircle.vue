@@ -1,0 +1,67 @@
+<template>
+	<svg
+		version="1.1"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink"
+		:x="_x"
+		:y="_y"
+		width="38.5px"
+		height="38.167px"
+		viewBox="0 0 64 64"
+		xml:space="preserve"
+		class="circle-icon"
+	>
+		<defs>
+			<linearGradient id="native-token-circle-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+				<stop offset="0%" stop-color="#8D33E5" />
+				<stop offset="100%" stop-color="#8D33E5" />
+			</linearGradient>
+		</defs>
+		<foreignObject x="446" y="318" width="100" height="100">
+			<TokenListPopover
+				:target="id"
+				:tokens="tokens"
+			/>
+		</foreignObject>
+
+		<g>
+			<image xlink:href="data:img/png;base64,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"/>
+
+		</g>
+		<circle
+			:id="id"
+			fill-rule="evenodd"
+			clip-rule="evenodd"
+			fill="transparent"
+			cx="38"
+			cy="38"
+			r="38"
+		/>
+	</svg>
+</template>
+
+<script>
+import GraphicComponent from './GraphicComponent.vue';
+import TokenListPopover from './TokenListPopover.vue';
+
+export default {
+	extends: GraphicComponent,
+
+	components: {
+		TokenListPopover
+	},
+
+	props: {
+		tokens: {
+			type: Array,
+			default: () => []
+		}
+	},
+
+	data () {
+		return {
+			id: this.getId('native-token-circle')
+		};
+	}
+};
+</script>

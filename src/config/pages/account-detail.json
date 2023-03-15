@@ -1,0 +1,281 @@
+{
+	"path": "/accounts/:address",
+	"name": "account-detail",
+	"meta": {
+		"group": "detail-page",
+		"keepAliveGoTo": []
+	},
+	"props": {
+		"layout": "flex",
+		"storeNamespaces": [],
+		"initActions": [
+			"account/fetchAccountDetail"
+		],
+		"schema": [
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "accountDetailTitle",
+				"managerGetter": "account/info",
+				"errorMessage": "accountDetailError",
+				"pagination": "none",
+				"fields": [
+					"address",
+					"accountAliasNames",
+					"addressHeight",
+					"publicKey",
+					"importance",
+					"accountType"
+				]
+			},
+			{
+				"layoutOptions": "adaptive",
+				"type": "CardTable",
+				"title": "multisigCosignatoriesTitle",
+				"managerGetter": "account/multisig",
+				"errorMessage": "multisigCosignatoriesError",
+				"pagination": "none",
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"minApproval",
+					"minRemoval",
+					"cosignatoryAddresses",
+					"multisigAddresses"
+				]
+			},
+			{
+				"layoutOptions": "adaptive",
+				"type": "AccountBalanceWidget",
+				"title": "accountBalanceTitle",
+				"managerGetter": "account/OwnedToken",
+				"dataGetter": "account/balanceWidget",
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info"
+			},
+			{
+				"layoutOptions": "adaptive",
+				"type": "CardTable",
+				"title": "ownedTokensTitle",
+				"managerGetter": "account/OwnedToken",
+				"pagination": "client",
+				"pageSize": 5,
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"tokenId",
+					"amount",
+					"tokenAliasNames"
+				]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "ownedNamespacesTitle",
+				"managerGetter": "account/OwnedNamespace",
+				"pagination": "server",
+				"pageSize": 10,
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"namespaceName",
+					"status",
+					"expirationDuration",
+					"registrationType"
+				]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "accountTransactionsTitle",
+				"managerGetter": "account/transactions",
+				"pagination": "server",
+				"hasFilter": true,
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"timestamp",
+					"deadline",
+					"blockHeight",
+					"direction",
+					"transactionType",
+					"transactionHash",
+					"recipient",
+					"extendGraphicValue"
+				],
+				"mobileFields": [
+					"timestamp",
+					"direction",
+					"transactionType",
+					"transactionHash"
+				]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "supplementalKeysTitle",
+				"managerGetter": "account/info",
+				"dataGetter": "account/getSupplementalPublicKeys",
+				"pagination": "client",
+				"pageSize": 5,
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"linkedAddress",
+					"nodeAddress",
+					"vrfAddress"
+				]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "votingKeysTitle",
+				"managerGetter": "account/info",
+				"dataGetter": "account/getVotingKeyList",
+				"pagination": "client",
+				"pageSize": 5,
+				"hideEmptyData": true,
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"address",
+					"publicKey",
+					"epochInfo"
+				]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "accountRestrictionTitle",
+				"managerGetter": "account/accountRestrictions",
+				"pagination": "client",
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"errorMessage": "accountRestrictionError",
+				"fields": [
+					"restrictionType",
+					"restrictionTokenValues",
+					"restrictionAddressValues",
+					"restrictionTransactionValues"
+				]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "tokenAddressRestrictionTitle",
+				"managerGetter": "account/tokenAddressRestrictions",
+				"pagination": "server",
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"errorMessage": "tokenAddressRestrictionError",
+				"fields": [
+                    "compositeHash",
+					"entryType",
+					"tokenId",
+                    "restrictions"
+                ]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "metadataEntriesTitle",
+				"managerGetter": "account/metadatas",
+				"pagination": "client",
+				"pageSize": 5,
+				"hideOnError": true,
+				"hasFilter":true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"scopedMetadataKey",
+					"senderAddress",
+					"targetAddress",
+					"value"
+				]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "hashLockTitle",
+				"managerGetter": "account/hashLocks",
+				"pagination": "server",
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"errorMessage": "hashLockError",
+				"fields": [
+					"transactionHash",
+					"endHeight",
+					"status",
+					"tokens"
+				]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "secretLockTitle",
+				"managerGetter": "account/secretLocks",
+				"pagination": "server",
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"errorMessage": "secretLockError",
+				"fields": [
+					"recipient",
+					"secret",
+					"endHeight",
+					"status",
+					"hashAlgorithm",
+					"tokens"
+				]
+			},
+			{
+				"layoutOptions": "full-width",
+				"type": "CardTable",
+				"title": "importanceHistoryTitle",
+				"managerGetter": "account/info",
+				"dataGetter": "account/getActivityBucketList",
+				"pagination": "client",
+				"pageSize": 5,
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"recalculationBlock",
+					"totalFeesPaid",
+					"beneficiaryCount",
+					"importanceScore"
+				]
+			},
+			{
+				"layoutOptions": "adaptive",
+				"type": "CardTable",
+				"title": "harvestedBlockTitle",
+				"managerGetter": "account/harvestedBlocks",
+				"pagination": "server",
+				"hideEmptyData": true,
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"version",
+					"height",
+					"receiptType",
+					"tokens"
+				]
+			},
+			{
+				"layoutOptions": "adaptive",
+				"type": "CardTable",
+				"title": "receiptTitle",
+				"managerGetter": "account/receipt",
+				"pagination": "server",
+				"hasFilter": true,
+				"hideOnError": true,
+				"hideDependOnGetter": "account/info",
+				"fields": [
+					"version",
+					"height",
+  					"receiptType",
+  					"recipient",
+  					"tokens"
+				]
+			}
+		]
+	}
+}

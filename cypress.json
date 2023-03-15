@@ -1,0 +1,12 @@
+{
+    "baseUrl": "http://localhost:8080/",
+    "defaultCommandTimeout": 20000,
+    "video": false,
+    "fixturesFolder": false,
+    "pluginsFile": false,
+    "supportFile": "e2e/support/index.js",
+    "testFiles": "**/*.spec.js",
+    "videosFolder": "e2e/videos",
+    "screenshotsFolder": "e2e/screenshots",
+    "integrationFolder":"e2e"
+}

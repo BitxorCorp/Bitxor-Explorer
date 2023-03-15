@@ -1,0 +1,99 @@
+{
+    "path": "/tokens/:tokenId",
+    "name": "token-detail",
+    "meta": {
+        "group": "detail-page",
+        "keepAliveGoTo": []
+    },
+    "props": {
+        "layout": "flex",
+        "storeNamespaces": [],
+        "initActions": ["token/fetchTokenInfo"],
+        "schema": [
+            {
+                "layoutOptions": "full-width",
+                "type": "CardTable",
+                "title": "tokenDetailTitle",
+                "managerGetter": "token/info",
+                "errorMessage": "tokenDetailError",
+                "pagination": "none",
+                "fields": [
+                    "tokenId",
+                    "tokenAliasNames",
+                    "divisibility",
+                    "address",
+                    "relativeAmount",
+                    "revision",
+                    "startHeight",
+                    "expiredInBlock",
+                    "expirationDuration",
+                    "supplyMutable",
+                    "transferable",
+                    "restrictable",
+                    "revokable"
+                ]
+            },
+            {
+                "layoutOptions": "adaptive",
+                "type": "CardTable",
+                "title": "tokenRestrictionListTitle",
+                "managerGetter": "token/restrictions",
+                "errorMessage": "tokenRestrictionListError",
+                "pagination": "server",
+                "hasFilter": true,
+                "fields": [
+                    "compositeHash",
+                    "entryType",
+                    "targetAddress",
+                    "restrictions"
+                ]
+            },
+            {
+                "layoutOptions": "full-width",
+                "type": "CardTable",
+                "title": "metadataEntriesTitle",
+                "managerGetter": "token/metadatas",
+                "errorMessage": "metadataEntriesError",
+                "pagination": "server",
+                "hasFilter": true,
+                "fields": [
+                    "scopedMetadataKey",
+                    "targetId",
+                    "senderAddress",
+                    "targetAddress",
+                    "metadataValue"
+                ]
+            },
+            {
+				"layoutOptions": "adaptive",
+				"type": "CardTable",
+				"title": "balanceTransferReceiptTitle",
+				"managerGetter": "token/balanceTransferReceipt",
+				"pagination": "server",
+				"hideEmptyData": true,
+				"hideOnError": true,
+				"fields": [
+					"version",
+					"height",
+  					"receiptType",
+  					"recipient",
+  					"tokens"
+				]
+			},
+			{
+				"layoutOptions": "adaptive",
+				"type": "CardTable",
+				"title": "artifactExpiryReceiptTitle",
+				"managerGetter": "token/artifactExpiryReceipt",
+				"pagination": "server",
+				"hideEmptyData": true,
+				"hideOnError": true,
+				"fields": [
+					"version",
+                    "receiptType",
+                    "tokenArtifactId"
+				]
+			}
+        ]
+    }
+}

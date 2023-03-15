@@ -1,0 +1,39 @@
+{
+    "path": "/blocks",
+    "name": "blocks",
+    "meta": {
+        "group": "list-page",
+        "keepAliveGoTo": ["detail-page"]
+    },
+    "props": {
+        "layout": "flex",
+        "storeNamespaces": ["block"],
+        "schema": [
+            {
+                "layoutOptions": "full-width",
+                "type": "CardTable",
+                "title": "blocksTitle",
+                "managerGetter": "block/timeline",
+                "pagination": "server",
+                "hasFilter": false,
+                "hasInfoText": false,
+                "fields": [
+                    "height",
+                    "age",
+                    "harvester",
+                    "totalTransactions",
+                    "statements",
+                    "blockReward",
+                    "totalFee"
+                ],
+                "mobileFields": [
+                    "height",
+                    "age",
+                    "totalTransactions",
+                    "blockReward",
+                    "totalFee"
+                ]
+            }
+        ]
+    }
+}

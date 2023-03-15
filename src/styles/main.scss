@@ -1,0 +1,153 @@
+
+$primary: $primary-color;
+$secondary: $secondary-color;
+$info: $secondary-color;
+$danger: $red-color;
+$pink: $pink-color;
+$blue: $blue-color;
+$green: $green-color;
+$orange: $orange-color;
+$dark-white: $dark-white-color;
+$dark-mode-blue: $dark-mode-button-text-color;
+
+$grid-breakpoints: (
+    xxxs: 0,
+    xxs: 320px,
+    xs: 568px,
+    sm: 667px,
+    md: 768px,
+    lg: 992px,
+    xl: 1920px
+);
+
+$container-max-widths: (
+    xxxs: 0,
+    xxs: 320px,
+    xs: 568px,
+    sm: 667px,
+    md: 768px,
+    lg: 992px,
+    xl: 1920px
+);
+
+$theme-colors: () !default;
+$theme-colors: map-merge(
+    (
+        'primary': $primary,
+        'secondary': $secondary,
+        'success': $green,
+        'info': $info,
+        'warning': $orange,
+        'title': $pink,
+        'dark-mode-blue': $dark-mode-blue
+    ),
+    $theme-colors
+);
+
+:root {
+    --testnet-badge-title: #{$dark-mode-text-title-color};
+    --header-bg-img: url(../styles/img/mainnet-header.png);
+    --footer-bg-img: url(../styles/img/mainnet-footer.png);
+    --main-bg-color: #242424;
+    --main-grid-bg: #242424;
+    --navigation-bg: #{$black-color};
+    --theme-switch-bg: #{$dark-mode-card-bg-color};
+    --text-color: #{$grey-color};
+    --clickable-text: #{$dark-mode-button-text-color};
+    --card-bg: #{$white-color};
+    --card-border: #{$primary-color};
+    --sub-card-border: #{$primary-color};
+    --sub-card-bg: #{$transparent};
+    --card-title-text: #{$accent-color};
+    --table-content-text: #24a5cb;
+    --balance-green-text: #{$green-color};
+    --balance-widget-bg: #{$transparent};
+    --token-filed-bg: #{$primary-color};
+    --loading-bg: #{$transparent};
+    --icon-invert: invert(1);
+}
+
+// Variables for dark mode
+[data-theme="darkMode"] {
+    --header-bg-img: url(../styles/img/mainnet-header.png);
+    --footer-bg-img: url(../styles/img/mainnet-footer.png);
+     --main-bg-color: #242424;
+    --main-grid-bg: #242424;
+    --text-color: #{$dark-mode-text-color};
+    --clickable-text: #fff;
+    --card-bg: #121111;
+    --card-border: #{$transparent};
+    --sub-card-border: #0a627c;
+    --sub-card-bg: #{$black-color};
+    --card-title-text: #{$dark-mode-text-title-color};
+    --table-content-text: #24a5cb;
+    --balance-green-text: #{$dark-mode-green-text-color};
+    --balance-widget-bg: #{$black-color};
+    --token-filed-bg: #2d5991;
+    --loading-bg: #{$dark-grey-color};
+    --icon-invert: invert(0);
+}
+
+// Variables for light mode Testnet
+[data-network="testnet"] {
+    --header-bg-img: url(../styles/img/testnet-header.png);
+    --footer-bg-img: url(../styles/img/testnet-footer.png);
+}
+
+// Variables for dark mode Testnet
+[data-theme="darkMode"][data-network="testnet"] {
+    --main-bg-color: #{$testnet-dark-mode-main-bg};
+    --main-grid-bg: #{$testnet-dark-mode-grid-bg};
+    --text-color: #{$dark-mode-text-color};
+    --clickable-text: #{$dark-mode-button-text-color};
+    --card-bg: #{$black-color};
+    --card-border: #{$transparent};
+    --sub-card-border: #0a627c;
+    --sub-card-bg: #{$black-color};
+    --card-title-text: #{$dark-mode-text-title-color};
+    --table-content-text: #24a5cb;
+    --balance-green-text: #{$dark-mode-green-text-color};
+    --balance-widget-bg: #{$black-color};
+    --token-filed-bg: #{$token-filed};
+    --loading-bg: #{$dark-grey-color};
+    --icon-invert: invert(0);
+}
+
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import '../../node_modules/bootstrap-vue/src/index.scss';
+@import './marker-cluster.scss';
+
+.border-transparent {
+    border-color: transparent;
+}
+
+.bg-transparent {
+    background: transparent;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: #1f123c;
+  //  background-image: linear-gradient(var(--main-grid-bg) 0.1rem, transparent 0.1rem), linear-gradient(90deg, var(--main-grid-bg) 0.1rem, transparent 0.1rem);
+    background-size: 25px 25px;
+}
+
+a {
+    color: var(--clickable-text);
+    font-weight: 600;
+
+    &:hover {
+        color: var(--clickable-text);
+    }
+}
+
+.popover {
+    background-color: var(--main-bg-color);
+    border-color: var(--sub-card-border);
+}
+
+.popover-header {
+    background-color: var(--sub-card-bg);
+    color: var(--text-color);
+    border-color: var(--sub-card-border);
+}

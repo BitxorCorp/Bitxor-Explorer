@@ -1,0 +1,17 @@
+[general]
+ignore=body-is-missing
+
+[title-must-not-contain-word]
+words=wip
+
+[title-min-length]
+min-length=20
+
+[title-max-length]
+line-length=80
+
+[body-min-length]
+min-length=5
+
+[body-max-line-length]
+line-length=140

@@ -1,0 +1,125 @@
+<template>
+	<svg
+		version="1.1"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink"
+		:x="_x"
+		:y="_y"
+		:width="_width"
+		:height="_height"
+		:viewBox="viewBox"
+		xml:space="preserve"
+		class="connector"
+		@click="onTokenClick(tokenId || token.tokenId)"
+	>
+		<defs>
+			<linearGradient id="connector-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+				<stop offset="0%" stop-color="RGB(255, 255, 255)" />
+				<stop offset="100%" stop-color="RGB(196, 182, 208)" />
+			</linearGradient>
+		</defs>
+		<g>
+			<title> {{ title }} </title>
+			<svg
+				x="96px"
+				y="32px"
+			>
+			 <image xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD8AAAA+CAYAAACcA8N6AAANG0lEQVRogcWbe4wdVR3HP+fM3XZ322233XZL6ZO2gLwspZSXiDwCJEhFMQVafEDxD2OIGqCARnn8IQpUohFCYiQkxMQqRF4aDSIGwYC8SngW2m4rLbT0sd3ubre7e+89x5wz59w5c+fe3btPvul07s6dOzPf3/v8zhkx/9EdDAcCjVYgtEZrDUqD3SvQxHulEUovjJRaLrQ+XSl9pFZ6ulaqFa2bUaoBpfu00gdQaq9Wul0o9anS+hWl9KtFpdpUUZt/7tKKotIos2lt/zZ7e79hIDe8nw2ICDgXuBy4WAuxWAlBpEEKKEojMGF/r4X5w0iQoxACpJGfQOhYuCB2gPoH8Djwd6Aw0I2HCjmK15oD3ANiH/AsQnwPIRYjDEmBNncSAmFJCnvMfBce83uzSSmIBPOElGuFEE8DB4EHBSzJ3PkzJD9bwB8Q7ESIdQiaPSkcQUNUWS27G1rCJGSD80UgFCmlFYKMjzcKIb8rEJuBv4I+OvMk40pecLeGTxDiquRYQtpuOAGYMOC+k26vS+cGpDGfpfk/9gQhAgEQf5biEoH4EPgdMDHzXGNM/gxgT10kbt57WLG7p0guCrQpREYQ2pHV7pxwI9y8JUgvKPOQwpO250ei9Pd1QDtwSeYJx4j8ncBLGjHzYL/iqiWTOb21nra9/XQVNJEMiZOYtAy0TyIkXSJKRhCxgKQjHVuBkPFmLUJIIikbYzfgN5knHQRDJf8UcJv5YIjs6ylyydwGnv/ybG47awbdeU1bex95jRNCQAaR1j6JpYSkhUwsRsvkHCkS0xeBK3iBANcbpQD1maeuglrJtwCbgJXlXxzMK7u/c9k0tlw5nyuOm8quzjzbOgs2wsuUSfvgF3+W5SbvhOQjvrCCkiXy4b5cAA7GHXcCizMMKqAW8jOAjcCxmW8sSjdm3qQcfzxvFq+sms85cxrZsa+f3YcL1gqEJxb4fxL8fOR3mYAgDUof+ROiMowbMqV9r6iNtQhgMPImkj5veGW+GQArZtbz/Mo5bFg5l5mNdWzb00tXQZGTSZRXJVl4DYt0wAstwQsqNPXAEuKaQIR6aAJeBFqrP+Xg5I2PH585WiOuXDSZrWsWcsc5sziUV7Tt76dg44GJGc78vRZlme+HwpBBAEwFPBJrkCnzNzgC+NtATzoQ+XuBizJHh4g6Kbj91Ba2fGMxV540jU86+tnWmS8R0o60IHaHks+74JYqiFJkKRNEXBSJtABOAR6p9sTVyJu8eVPm6Agwd3KODRfO5oXVi1g2q5G9vUWreRsuU7k/TJPlqU8GkV8m5i/TLlCGbwLXVHrySuSNnz+YOTpKOHt2A29cdRRnzm5k56F8Kfj5NGajPCHhQAg++KWifzb1VRCAqQGOrIX8PcD8zNFRxoyGHEXtUp81eaw2vZ+HgxwhyypAGZt9JvjJgHya/2Rg/WDklwLfH2vi+LGpL32lLFV+1XM/qUCYVH7p1BcLQJYHP4PV5TGsnPwtmaccI4TmbLSuSpUfiflnRnvhMDgY9MjyOiAWQJY/t1Yjf4KTzrhAE5BxZq9Ckw9zvKQs8MVxIhP8wgwg4+hfhvPcliF/7XgRJxjthqR86Vuq98uCXyiE9MgwPVIMLcAIoqzLZUaCFjLYr8o84RhCO+JFoF/FnGzkJ3HxpOITQdmbDHkT7cts8BPhMDjF42u+8vPkLx2PCJ+Ce6KGnKQ7r/jfwbwteYUNfklKI/AAfA3vi6CSiQfFj70GSTAkU/mZIfDKkPyIK7lhIa+Z2ZDj2cvnc+Vxzezc18fO7rwVQJz1vDtIG90zdX84QArSnDf3VN5Pa//SkPy5483bl6GmIbKspZ4NF8/hiVULWdA8gbZPe2nviwdCpeInaHYkfT4C/ychTJD2Kqe+FcRDDBa5SD/+cD7dr+KQdNlRTWz61tHcc/Fc+jV8sOcwpl2Qi6QdA+hUni/fJ+WuTDVB4uORjFOfC36m03y6Ib/ssyGeOWIRCVi3vIUt1x3L2hWt7OjMs+VAf9y7k0HAq1AMVWx6BL0/O/BJbnWCHPdAV0Iydq8kh1mNOR66aA6vXXsM5y1oYvueXj7uyscEpAwaHUmlWF7iJoki0/IyWGx+viBz5/FA0NoeaLZp+awGnlu9mKeuXsKilnradvfQ0Rt3i1NFkM8CZKs9kbS8nfXYSy+VI2lWjAQx4eqaL8fKJVN55zvHsX7lQtsg3bqvFxn5SC4T7Zf6A0kqDCO/SFJfi3Q9us9A8UmLeyDNhzAPe+NprWy//iTWLGtlX2/RFkmJ6cts6vNkZToDIJgs3XBv/CGSQqcWzYeY0Zjj5jOPsBE8ryiluoz/B75vPSOwgEjICTmGPcE7QtTo81URtLbSpOMhMiirdTuDbSxCKjulbgKmmVJXEmnI91e7/tgLoEaHr4Zy8jJWpYj/iztE0ohB2GnxpB9iraHPnL63yqXHHkkrfwTkyxqe8YgonvuvMtlpUqUUosecsS1z0XFjTmkGd3iXCLJFavyflLtUmeyUkg5D/sPMRccBPtWJYeq9pHAZaL+s9x92fS1pSEZ+Qr5nyA9vUc4IEfkOThL0hwQTyFJNj7IFEaFL+CrP1/cu5X1oyL/zWZDvMjnKTVvr4Wg/SGl+2Ft+LJzsLFV6orTao82QfwvYnrn4GOGdjjwXPPMpL+3tgwmSj7oKdnXVcKDcTE/YyiqRDsb+Ri46mOISQnRIKV7wq7FeBhaOJemOfsVP3+zggfc60QVHNie4ZWkzUyZkGo2Dwi90sNPgQNFqWAc+pINUmrS+pDYC0G9pITo9ebPM66ohP0GNeGBTF7dvPMD+7gK+3FpzdBM/P2Ua8ydFw76un+31KV65pW1xH9DP/7k2uIrPt3W+lk8SrMMzyzoOAZMydxgBnt3Vyw2vtvP27t44wmlYcUQ9vzptOmfNHPY6ohgiJhZbAK6I0XFtr90oz5a+7pjQsf8jiKJ49taTN2vnngCuztxkGNjcmWfd6x082dZd+vGRTXXctbyZby8enaGEz+1KxOQjQw6/4Em7eQFdFv3t388KxPuUrcB8eKTk2/sVP9nYwW/f76To/DpXJ7lh2RTuWNpMQzSSWrYcYQsb6+/xMDbOHt7MEaH2TYBQD/kLheT/CbwAfDFznwEwKRcTut/5dXtXoZTEL1s8mftOncaiptFf5er9urTI0TQqlEbqOPil632/15uElBsqkcfN0NZMvrkh4oU9fWzYfognN3eXavWTW+u559RpXDi75oVRQ0YptflBjBbO/H3w8z4em75ZII0U68Naupz8X5zvf3WwhzG3bZkY8cjmLrsEzdz1+BkTuX1pM1csbMycP4YSsL7sZ3us+WufAsyqb7fuV4v/aHgorKcq2eM6t+Rs0ByUV5rGOkldpLn/jBbWHDWqyaIqTE//FxvbKWhNU50ds1oBKEc6khqphB3RxwNabYqcm8rHEZWqiy3AzZmjVSCsqQm2dRfsYoOxxvq3O5j3+21s+KDTzvZEwfRVuM4vvbhR3itk9LKIIlLbAC8bPO2ndQaCua8J7DsP5JnUILl92TRuOH4KoxrYgSc/6uFHr+7n/V2HmTo5R8tESaGo4hGOTfZmr6wVSKWIdPzyQ1Gpl1GcqSs8z0Dkp7hBT01r8MzU0v6+Ige7CixomWCrt9Wj4AZvtPfzg//u58XtPUyol8yZFNmxgA7f7IDY9FUsDGGjvkIqerTSJ2p0xZ7FQOQNTnQDnwpyy8Jnl109Rfp6inxhfiO/Pm06y1smZM4dDHt6i9z6egcPb+q0/jxvSp19W8OT1l7jqVdbEu2b6B4pdT6af1W7VS3v2JhJzKoXqARbWWr4yKy303DN56Zw9/JmWutrq+PXv9vJnW8eoLunyKypEzDlf9ESxmoVyzl4r8dvTvsmvcmiXhUp9Vjm4kMkb3C+K4KGBOP3h4uw+2A/kxoibju5mXUnTq1qRk/tOMxNr7WzeU8fU5tytNRHFFRpesPmdK1ibdvEpmLta6d94T5rpa+QRfVo5F2iCobydpV5rePfblnnkGDiQXtvkY6uAktmTuSXK6bzlXkNpUu8fzDPD19p55lth6irj6xfV3ppyqYs7eoaZ/olS4j9vRulL9BKvyKLitEkb9Dg1rN+KfPNIPDx4ONDRfK9RS4/ponbPj+Vxz/q4c6NHVaLc6fWmSE+1XobXvs47ceWUPL9tw1x94oaY0He48fAzzJHa4BPjbsOFSgW49KztTFick5QqEI6LQBv6sE7fVrfh9I3WqkZnx9j8gbmFa8/jWR+v6iTlSa1ouT7cXTfitZXoPUbMfGhka9U4dWKLW5V89eBXcO5QDSMCQtnHAcErHUKeCNzUo0Yjffq/uwW9a5yNcFYYiuwViOmu/7DiDCab1Q+5tbungTcBbybOWN4aHND7VOcpkdM2mMkPl8LTGlslnuebZbcuzRptGZeAzFln+22ucnSLmPOwKfuJSHzptRzjnz2weN8HhQ4Q/R54P+0sVhhc0U2MAAAAABJRU5ErkJggg=="/>
+</svg>
+		</g>
+		<text
+			v-if="!hideCaption"
+			x="130"
+			y="122.8457"
+			class="token-text"
+			text-anchor="middle"
+		>{{ truncatedTokenName }}</text>
+	</svg>
+</template>
+
+<script>
+import GraphicComponent from './GraphicComponent.vue';
+
+export default {
+	extends: GraphicComponent,
+
+	props: {
+		width: {
+			type: Number,
+			default: 261.333
+		},
+
+		height: {
+			type: Number,
+			default: 131.313
+		},
+
+		token: {
+			type: Object,
+			default: () => ({
+				tokenId: '',
+				aliasName: ''
+			})
+		},
+
+		tokenId: {
+			type: String
+		},
+
+		aliasName: {
+			type: String
+		},
+
+		hideCaption: {
+			type: Boolean,
+			default: false
+		}
+	},
+
+	computed: {
+		title () {
+			return this.getTranslation('token') + ': ' + ((this.aliasName || this.token.aliasName) || (this.tokenId || this.token.tokenId));
+		},
+
+		iconColor () {
+			return this.getIconColorFromHex(this.tokenId || this.token.tokenId);
+		},
+
+		truncatedTokenId () {
+			return this.truncString(this.tokenId || this.token.tokenId);
+		},
+
+		truncatedTokenName () {
+			const aliasName = this.aliasName || this.token.aliasName;
+			const tokenId = this.tokenId || this.token.tokenId;
+
+			if (aliasName)
+				return this.truncString(aliasName, 5);
+			return this.truncString(tokenId);
+		},
+
+		viewBox () {
+			return this.hideCaption
+				? '97 30 70 65'
+				: '0 0 261.333 131.313';
+		}
+	}
+};
+</script>
+
+<style lang="scss" scoped>
+.connector {
+    cursor: pointer;
+}
+
+.connector-body {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.token-text {
+    font-size: 18px;
+    font-weight: bold;
+    fill: var(--clickable-text);
+}
+</style>
