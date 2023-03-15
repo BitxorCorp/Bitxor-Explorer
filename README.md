@@ -59,7 +59,7 @@ Check [CONTRIBUTING](CONTRIBUTING.md) for information on how to contribute.
 
 Copyright 2022 Bitxor Community
 
-Licensed under the [Apache License 2.0](LICENSE)
+Licensed under the [LGPL-3.0](LICENSE)
 
 [self]: https://github.com/bitxorcorp/bitxor-explorer
 [docs]: https://docs.bitxor.org
